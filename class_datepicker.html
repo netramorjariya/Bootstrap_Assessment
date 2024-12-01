@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Interval Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Datepicker CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center">Date Interval</h2>
+    <form id="date-form" class="text-center">
+        <div class="form-group">
+            <label for="start-date">From:</label>
+            <input type="text" id="start-date" class="form-control d-inline w-50 datepicker" placeholder="MM/DD/YYYY">
+        </div>
+        <div class="form-group">
+            <label for="end-date">To:</label>
+            <input type="text" id="end-date" class="form-control d-inline w-50 datepicker" placeholder="MM/DD/YYYY">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="calculateInterval()">Calculate</button>
+    </form>
+    <div id="result" class="mt-4 text-center text-white bg-primary p-3 rounded d-none"></div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Datepicker JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+    // Initialize datepickers
+    $('.datepicker').datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true
+    });
+
+    function calculateInterval() {
+        const startDate = new Date(document.getElementById('start-date').value);
+        const endDate = new Date(document.getElementById('end-date').value);
+
+        if (isNaN(startDate) || isNaN(endDate)) {
+            alert('Please enter valid dates!');
+            return;
+        }
+
+        const diffTime = Math.abs(endDate - startDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const diffYears = Math.floor(diffDays / 365);
+        const diffMonths = Math.floor(diffDays / 30);
+        const diffWeeks = Math.floor(diffDays / 7);
+
+        document.getElementById('result').classList.remove('d-none');
+        document.getElementById('result').innerHTML = `
+            <p>Date interval between ${startDate.toLocaleDateString()} and ${endDate.toLocaleDateString()}</p>
+            <p>In years: ${diffYears}</p>
+            <p>In months: ${diffMonths}</p>
+            <p>In weeks: ${diffWeeks}</p>
+            <p>In days: ${diffDays}</p>
+        `;
+    }
+</script>
+</body>
+</html>
